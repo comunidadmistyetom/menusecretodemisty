@@ -98,7 +98,6 @@ button:focus-visible {
   animation: breathe 2s ease-in-out infinite;
 }
 
-/* Los botones transparentes coinciden con las seis bandejas. */
 .choices {
   position: absolute;
   left: 1.5%;
@@ -232,40 +231,6 @@ button:focus-visible {
   animation: fall 3s linear both;
 }
 
-dialog {
-  width: min(90vw, 360px);
-  max-height: 85svh;
-  overflow: auto;
-  padding: 25px;
-  border: 3px solid #f56da9;
-  border-radius: 24px;
-  background: #fff4fa;
-  color: #75264d;
-  text-align: center;
-}
-
-dialog::backdrop {
-  background: #201625b8;
-}
-
-dialog h2 {
-  font-size: 22px;
-}
-
-dialog p {
-  line-height: 1.5;
-}
-
-dialog button {
-  padding: 12px 25px;
-  border: 0;
-  border-radius: 15px;
-  background: #e82c8b;
-  color: white;
-  font-weight: bold;
-  cursor: pointer;
-}
-
 @keyframes breathe {
   50% {
     transform: scale(1.035);
@@ -305,8 +270,12 @@ dialog button {
 
 <main class="game" aria-label="El menú secreto de Misty">
 
-  <!-- INICIO -->
-  <section id="inicio" class="screen" aria-label="Inicio">
+  <!-- PANTALLA DE INICIO -->
+  <section
+    id="inicio"
+    class="screen"
+    aria-label="Inicio"
+  >
     <img
       class="backdrop"
       src="inicio.png"
@@ -328,7 +297,7 @@ dialog button {
     </button>
   </section>
 
-  <!-- ELECCIÓN -->
+  <!-- PANTALLA DE ELECCIÓN -->
   <section
     id="eleccion"
     class="screen"
@@ -343,41 +312,49 @@ dialog button {
     >
 
     <div class="choices">
+
+      <!-- ARRIBA IZQUIERDA -->
       <button
         type="button"
         data-fish="0"
         aria-label="Elegir pescado común"
       ></button>
 
+      <!-- ARRIBA DERECHA -->
       <button
         type="button"
         data-fish="1"
         aria-label="Elegir sardinas"
       ></button>
 
+      <!-- MEDIO IZQUIERDA -->
       <button
         type="button"
         data-fish="2"
         aria-label="Elegir atún"
       ></button>
 
+      <!-- MEDIO DERECHA -->
       <button
         type="button"
         data-fish="3"
         aria-label="Elegir salmón"
       ></button>
 
+      <!-- ABAJO IZQUIERDA -->
       <button
         type="button"
         data-fish="4"
         aria-label="Elegir pez globo"
       ></button>
 
+      <!-- ABAJO DERECHA -->
       <button
         type="button"
         data-fish="5"
         aria-label="Elegir merluza"
       ></button>
+
     </div>
 
     <div
@@ -390,7 +367,7 @@ dialog button {
     </div>
   </section>
 
-  <!-- PREMIO -->
+  <!-- PANTALLA DE PREMIO -->
   <section
     id="resultado"
     class="screen"
@@ -423,7 +400,7 @@ dialog button {
       id="claim"
       class="image-button claim"
       type="button"
-      aria-label="Reclamar premio"
+      aria-label="Reclamar premio por WhatsApp"
     >
       <img
         src="boton_reclamar.png"
@@ -432,81 +409,83 @@ dialog button {
       >
     </button>
 
-    <button id="again" class="again" type="button">
+    <button
+      id="again"
+      class="again"
+      type="button"
+    >
       Volver a probar
     </button>
   </section>
-
-  <!-- AVISO TEMPORAL: WHATSAPP SE AGREGA AL FINAL -->
-  <dialog id="claim-dialog" aria-labelledby="dialog-title">
-    <h2 id="dialog-title">¡Tu premio está listo! 😻🐟</h2>
-    <p id="claim-text"></p>
-    <p>
-      El envío a WhatsApp se habilitará cuando configuremos
-      las líneas correspondientes.
-    </p>
-    <button id="close-dialog" type="button">
-      Entendido
-    </button>
-  </dialog>
 
 </main>
 
 <script>
 "use strict";
 
+/* PREMIOS Y LÍNEAS DE WHATSAPP */
 const fishes = [
   {
     name: "Pescado común",
     image: "misty_pescado.png",
     prize: "500 fichas",
-    detail: "¡Disfrutá tu premio!"
+    detail: "¡Disfrutá tu premio!",
+    whatsapp: "https://wa.link/drywhr"
   },
   {
     name: "Sardinas",
     image: "misty_sardinas.png",
     prize: "1000 fichas",
-    detail: "¡Disfrutá tu premio!"
+    detail: "¡Disfrutá tu premio!",
+    whatsapp: "https://wa.link/ngurrb"
   },
   {
     name: "Atún",
     image: "misty_atun.png",
     prize: "10%",
-    detail: "En tu próxima carga"
+    detail: "En tu próxima carga",
+    whatsapp: "https://wa.link/rbrp20"
   },
   {
     name: "Salmón",
     image: "misty_salmon.png",
     prize: "15%",
-    detail: "En tu próxima carga"
+    detail: "En tu próxima carga",
+    whatsapp: "https://wa.link/x23wy4"
   },
   {
     name: "Pez globo",
     image: "misty_pezglobo.png",
     prize: "20%",
-    detail: "En tu próxima carga"
+    detail: "En tu próxima carga",
+    whatsapp: "https://wa.link/3fyk7i"
   },
   {
     name: "Merluza",
     image: "misty_merluza.png",
     prize: "25%",
-    detail: "En tu próxima carga"
+    detail: "En tu próxima carga",
+    whatsapp: "https://wa.link/qf3qz7"
   }
 ];
 
 const get = id => document.getElementById(id);
-const choiceButtons = document.querySelectorAll("[data-fish]");
+
+const choiceButtons = document.querySelectorAll(
+  "[data-fish]"
+);
 
 let busy = false;
 let selected = null;
 
+/* CAMBIO DE PANTALLA */
 function showScreen(id) {
   document.querySelectorAll(".screen").forEach(screen => {
     screen.hidden = screen.id !== id;
   });
 }
 
-/* Precarga las imágenes de Misty y el fondo final. */
+/* PRECARGA DE IMÁGENES */
 [
   "eleccion.png",
   "premio.png",
@@ -517,11 +496,13 @@ function showScreen(id) {
   image.src = source;
 });
 
+/* INICIAR */
 get("play").addEventListener("click", () => {
   showScreen("eleccion");
   choiceButtons[0].focus({ preventScroll: true });
 });
 
+/* ELEGIR PESCADO */
 choiceButtons.forEach(button => {
   button.addEventListener("click", () => {
     if (busy) return;
@@ -531,6 +512,7 @@ choiceButtons.forEach(button => {
 
     choiceButtons.forEach(otherButton => {
       otherButton.disabled = true;
+
       otherButton.classList.toggle(
         "chosen",
         otherButton === button
@@ -539,14 +521,15 @@ choiceButtons.forEach(button => {
 
     get("selecting").hidden = false;
 
-    /* Breve pausa antes de revelar el premio. */
     window.setTimeout(() => {
       const misty = get("misty");
 
       misty.classList.remove("enter");
       misty.src = selected.image;
+
       misty.alt =
-        "Misty sosteniendo " + selected.name.toLowerCase();
+        "Misty sosteniendo " +
+        selected.name.toLowerCase();
 
       get("fish-name").textContent =
         "Elegiste: " + selected.name;
@@ -556,16 +539,17 @@ choiceButtons.forEach(button => {
 
       showScreen("resultado");
 
-      /* Reinicia la animación de entrada. */
       void misty.offsetWidth;
       misty.classList.add("enter");
 
       celebrate();
+
       get("claim").focus({ preventScroll: true });
     }, 1100);
   });
 });
 
+/* CONFETI */
 function celebrate() {
   const container = get("confetti");
   container.replaceChildren();
@@ -578,21 +562,32 @@ function celebrate() {
     return;
   }
 
-  const colors = ["#ff4fac", "#ffd16c", "#36d7db"];
+  const colors = [
+    "#ff4fac",
+    "#ffd16c",
+    "#36d7db"
+  ];
 
   for (let index = 0; index < 30; index++) {
     const piece = document.createElement("i");
 
-    piece.style.left = Math.random() * 100 + "%";
-    piece.style.background = colors[index % colors.length];
-    piece.style.animationDelay = Math.random() * 1.2 + "s";
-    piece.style.animationDuration = 2 + Math.random() * 2 + "s";
+    piece.style.left =
+      Math.random() * 100 + "%";
+
+    piece.style.background =
+      colors[index % colors.length];
+
+    piece.style.animationDelay =
+      Math.random() * 1.2 + "s";
+
+    piece.style.animationDuration =
+      2 + Math.random() * 2 + "s";
 
     container.appendChild(piece);
   }
 }
 
-/* Repetición habilitada solamente para esta etapa de prueba. */
+/* REPETIR DURANTE LAS PRUEBAS */
 get("again").addEventListener("click", () => {
   busy = false;
   selected = null;
@@ -606,26 +601,15 @@ get("again").addEventListener("click", () => {
   });
 
   showScreen("eleccion");
+
   choiceButtons[0].focus({ preventScroll: true });
 });
 
-/* Aquí conectaremos las líneas de WhatsApp al finalizar. */
+/* RECLAMAR EN LA LÍNEA CORRESPONDIENTE */
 get("claim").addEventListener("click", () => {
   if (!selected) return;
 
-  const percentagePrize =
-    selected.detail === "En tu próxima carga";
-
-  get("claim-text").textContent =
-    "Ganaste " +
-    selected.prize +
-    (percentagePrize ? " en tu próxima carga." : ".");
-
-  get("claim-dialog").showModal();
-});
-
-get("close-dialog").addEventListener("click", () => {
-  get("claim-dialog").close();
+  window.location.assign(selected.whatsapp);
 });
 </script>
 
