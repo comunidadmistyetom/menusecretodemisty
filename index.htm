@@ -93,7 +93,7 @@ button:focus-visible{
   font-size:4cqw;
 }
 
-/* ELECCIÓN DE PESCADOS */
+/* ELECCIÓN */
 .choices{
   position:absolute;
   left:1.5%;
@@ -137,7 +137,7 @@ button:focus-visible{
   font-weight:bold;
 }
 
-/* MISTY Y SU MESA */
+/* MISTY Y LA MESA */
 .result-scene{
   position:absolute;
   left:1%;
@@ -186,7 +186,7 @@ button:focus-visible{
 .result-scene.seated .misty{opacity:0}
 .result-scene.seated .dinner{opacity:1}
 
-/* CARTA DE MENÚ */
+/* MENÚ DE CONDICIONES */
 .conditions{
   position:absolute;
   right:2%;
@@ -318,24 +318,23 @@ button:focus-visible{
   line-height:1.15;
   font-weight:bold;
 }
-
-/* BOTONES */
 .claim{
   bottom:7%;
   left:10%;
   width:80%;
 }
-.again{
+.saved-note{
   position:absolute;
-  bottom:1.8%;
-  left:24%;
-  width:52%;
-  padding:1.4cqw;
-  border:0;
+  bottom:2%;
+  left:8%;
+  width:84%;
+  margin:0;
+  padding:1.3cqw 2cqw;
   border-radius:20px;
-  background:#fffdeb;
+  background:#fff5e4ed;
   color:#7a2850;
-  font-size:3cqw;
+  text-align:center;
+  font-size:2.8cqw;
   font-weight:bold;
 }
 
@@ -358,9 +357,7 @@ button:focus-visible{
   50%{transform:scale(1.035)}
 }
 @keyframes fall{
-  to{
-    transform:translateY(105svh) rotate(600deg);
-  }
+  to{transform:translateY(105svh) rotate(600deg)}
 }
 @media(prefers-reduced-motion:reduce){
   *,*::before,*::after{
@@ -372,7 +369,6 @@ button:focus-visible{
 </head>
 
 <body>
-
 <main class="game" aria-label="El menú secreto de Misty">
 
   <button
@@ -385,29 +381,20 @@ button:focus-visible{
   >♪</button>
 
   <!-- INICIO -->
-  <section
-    id="inicio"
-    class="screen"
-    aria-label="Inicio"
-  >
+  <section id="inicio" class="screen" aria-label="Inicio">
     <img
       class="backdrop"
       src="inicio.png"
       alt="Misty te da la bienvenida a su restaurante"
       draggable="false"
     >
-
     <button
       id="play"
       class="image-button play"
       type="button"
       aria-label="Iniciar juego"
     >
-      <img
-        src="boton_inicio.png"
-        alt="Inicio"
-        draggable="false"
-      >
+      <img src="boton_inicio.png" alt="Inicio" draggable="false">
     </button>
   </section>
 
@@ -426,49 +413,15 @@ button:focus-visible{
     >
 
     <div class="choices">
-      <button
-        type="button"
-        data-fish="0"
-        aria-label="Elegir pescado común"
-      ></button>
-
-      <button
-        type="button"
-        data-fish="1"
-        aria-label="Elegir sardinas"
-      ></button>
-
-      <button
-        type="button"
-        data-fish="2"
-        aria-label="Elegir atún"
-      ></button>
-
-      <button
-        type="button"
-        data-fish="3"
-        aria-label="Elegir salmón"
-      ></button>
-
-      <button
-        type="button"
-        data-fish="4"
-        aria-label="Elegir pez globo"
-      ></button>
-
-      <button
-        type="button"
-        data-fish="5"
-        aria-label="Elegir merluza"
-      ></button>
+      <button type="button" data-fish="0" aria-label="Elegir pescado común"></button>
+      <button type="button" data-fish="1" aria-label="Elegir sardinas"></button>
+      <button type="button" data-fish="2" aria-label="Elegir atún"></button>
+      <button type="button" data-fish="3" aria-label="Elegir salmón"></button>
+      <button type="button" data-fish="4" aria-label="Elegir pez globo"></button>
+      <button type="button" data-fish="5" aria-label="Elegir merluza"></button>
     </div>
 
-    <div
-      id="selecting"
-      class="selecting"
-      role="status"
-      hidden
-    >
+    <div id="selecting" class="selecting" role="status" hidden>
       ¡Misty está preparando tu sorpresa! 🐟
     </div>
   </section>
@@ -489,27 +442,16 @@ button:focus-visible{
 
     <div id="confetti" aria-hidden="true"></div>
 
-    <!-- MISTY CON EL PESCADO Y DESPUÉS EN LA MESA -->
     <div id="result-scene" class="result-scene">
-      <img
-        id="misty"
-        class="misty"
-        alt=""
-        draggable="false"
-      >
+      <img id="misty" class="misty" alt="" draggable="false">
 
-      <div
-        id="dinner"
-        class="dinner"
-        aria-hidden="true"
-      >
+      <div id="dinner" class="dinner" aria-hidden="true">
         <img
           class="dinner-base"
           src="misty_mesa.png"
           alt=""
           draggable="false"
         >
-
         <img
           id="plate-fish"
           class="plate-fish"
@@ -519,55 +461,32 @@ button:focus-visible{
       </div>
     </div>
 
-    <!-- MENÚ DE CONDICIONES -->
     <aside
       class="conditions"
       aria-label="Menú de condiciones del bono"
       tabindex="0"
     >
       <div class="menu-top">✦ MISTY ✦</div>
-
       <h2>Menú de<br>condiciones</h2>
-
-      <div class="menu-divider" aria-hidden="true">
-        🐟
-      </div>
+      <div class="menu-divider" aria-hidden="true">🐟</div>
 
       <ul>
-        <li>
-          Válido para <strong>una carga</strong>.
-        </li>
-        <li>
-          Una plataforma y un número.
-        </li>
-        <li>
-          Tenés que <strong>duplicar</strong>.
-        </li>
-        <li>
-          <strong>No válido para ruleta.</strong>
-        </li>
-        <li>
-          Tope de bonificación:
-          <strong>$30.000</strong>.
-        </li>
-        <li>
-          Si superás <strong>$100.000</strong>,
-          el bono queda en <strong>$30.000</strong>.
-        </li>
-        <li>
-          Pedí alias antes de transferir.
-        </li>
+        <li>Válido para <strong>una carga</strong>.</li>
+        <li>Una plataforma y un número.</li>
+        <li>Tenés que <strong>duplicar</strong>.</li>
+        <li><strong>No válido para ruleta.</strong></li>
+        <li>Tope de bonificación: <strong>$30.000</strong>.</li>
+        <li>Si superás <strong>$100.000</strong>, el bono queda en <strong>$30.000</strong>.</li>
+        <li>Pedí alias antes de transferir.</li>
       </ul>
     </aside>
 
-    <!-- PREMIO GANADO -->
     <div class="prize-card" aria-live="polite">
       <span id="fish-name"></span>
       <h1 id="prize"></h1>
       <p id="detail"></p>
     </div>
 
-    <!-- RECLAMAR -->
     <button
       id="claim"
       class="image-button claim"
@@ -581,80 +500,74 @@ button:focus-visible{
       >
     </button>
 
-    <button
-      id="again"
-      class="again"
-      type="button"
-    >
-      Volver a probar
-    </button>
+    <p class="saved-note">
+      Una sola oportunidad. ¡Tu premio queda guardado! 💗
+    </p>
   </section>
-
 </main>
 
 <script>
 "use strict";
 
-/* PREMIOS Y ENLACES */
+const STORAGE_KEY = "misty_menu_partida_v1";
+
 const fishes = [
   {
-    name: "Pescado común",
-    image: "misty_pescado.png",
-    fish: "pescado.png",
-    prize: "500 fichas",
-    detail: "¡Disfrutá tu premio!",
-    whatsapp: "https://wa.link/drywhr"
+    name:"Pescado común",
+    image:"misty_pescado.png",
+    fish:"pescado.png",
+    prize:"500 fichas",
+    detail:"¡Disfrutá tu premio!",
+    whatsapp:"https://wa.link/drywhr"
   },
   {
-    name: "Sardinas",
-    image: "misty_sardinas.png",
-    fish: "sardinas.png",
-    prize: "1000 fichas",
-    detail: "¡Disfrutá tu premio!",
-    whatsapp: "https://wa.link/ngurrb"
+    name:"Sardinas",
+    image:"misty_sardinas.png",
+    fish:"sardinas.png",
+    prize:"1000 fichas",
+    detail:"¡Disfrutá tu premio!",
+    whatsapp:"https://wa.link/ngurrb"
   },
   {
-    name: "Atún",
-    image: "misty_atun.png",
-    fish: "atun.png",
-    prize: "10%",
-    detail: "En tu próxima carga",
-    whatsapp: "https://wa.link/rbrp20"
+    name:"Atún",
+    image:"misty_atun.png",
+    fish:"atun.png",
+    prize:"10%",
+    detail:"En tu próxima carga",
+    whatsapp:"https://wa.link/rbrp20"
   },
   {
-    name: "Salmón",
-    image: "misty_salmon.png",
-    fish: "salmon.png",
-    prize: "15%",
-    detail: "En tu próxima carga",
-    whatsapp: "https://wa.link/x23wy4"
+    name:"Salmón",
+    image:"misty_salmon.png",
+    fish:"salmon.png",
+    prize:"15%",
+    detail:"En tu próxima carga",
+    whatsapp:"https://wa.link/x23wy4"
   },
   {
-    name: "Pez globo",
-    image: "misty_pezglobo.png",
-    fish: "pezglobo.png",
-    prize: "20%",
-    detail: "En tu próxima carga",
-    whatsapp: "https://wa.link/3fyk7i"
+    name:"Pez globo",
+    image:"misty_pezglobo.png",
+    fish:"pezglobo.png",
+    prize:"20%",
+    detail:"En tu próxima carga",
+    whatsapp:"https://wa.link/3fyk7i"
   },
   {
-    name: "Merluza",
-    image: "misty_merluza.png",
-    fish: "merluza.png",
-    prize: "25%",
-    detail: "En tu próxima carga",
-    whatsapp: "https://wa.link/qf3qz7"
+    name:"Merluza",
+    image:"misty_merluza.png",
+    fish:"merluza.png",
+    prize:"25%",
+    detail:"En tu próxima carga",
+    whatsapp:"https://wa.link/qf3qz7"
   }
 ];
 
 const get = id => document.getElementById(id);
-
-const choices = document.querySelectorAll(
-  "[data-fish]"
-);
+const choices = document.querySelectorAll("[data-fish]");
 
 let busy = false;
 let selected = null;
+let revealTimer = null;
 let seatTimer = null;
 
 /* CAMBIAR PANTALLA */
@@ -664,109 +577,175 @@ function showScreen(id) {
   });
 }
 
-/* PRECARGAR IMÁGENES */
+/* LEER EL PREMIO GUARDADO */
+function readChoice() {
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+
+    if (saved === null) return null;
+
+    const index = Number(saved);
+
+    if (
+      Number.isInteger(index) &&
+      index >= 0 &&
+      index < fishes.length
+    ) {
+      return index;
+    }
+  } catch (error) {
+    /* Se comprobará el almacenamiento antes de jugar. */
+  }
+
+  return null;
+}
+
+/* COMPROBAR ALMACENAMIENTO */
+function storageAvailable() {
+  try {
+    const testKey = STORAGE_KEY + "_test";
+    localStorage.setItem(testKey, "1");
+    localStorage.removeItem(testKey);
+    return true;
+  } catch (error) {
+    return false;
+  }
+}
+
+function storageMessage() {
+  alert(
+    "Para guardar tu única oportunidad, habilitá el " +
+    "almacenamiento del navegador y volvé a abrir el juego."
+  );
+}
+
+/* PRECARGAR */
 [
   "eleccion.png",
   "premio.png",
   "misty_mesa.png",
   "boton_reclamar.png",
-  ...fishes.flatMap(fish => [
-    fish.image,
-    fish.fish
-  ])
+  ...fishes.flatMap(fish => [fish.image, fish.fish])
 ].forEach(source => {
   const image = new Image();
   image.src = source;
 });
 
+/* MOSTRAR MISTY SENTADA */
+function seatMisty() {
+  if (!selected) return;
+
+  get("result-scene").classList.add("seated");
+  get("misty").alt = "";
+
+  const dinner = get("dinner");
+  dinner.setAttribute("aria-hidden", "false");
+  dinner.setAttribute("role", "img");
+  dinner.setAttribute(
+    "aria-label",
+    "Misty sentada a la mesa con " +
+    selected.name.toLowerCase() +
+    " en el plato"
+  );
+}
+
+/* MOSTRAR EL PREMIO */
+function showPrize(index, animate = false) {
+  window.clearTimeout(revealTimer);
+  window.clearTimeout(seatTimer);
+
+  selected = fishes[index];
+  busy = true;
+
+  choices.forEach(button => {
+    button.disabled = true;
+  });
+
+  get("selecting").hidden = true;
+
+  get("result-scene").classList.remove("seated");
+  get("dinner").setAttribute("aria-hidden", "true");
+
+  get("misty").src = selected.image;
+  get("misty").alt =
+    "Misty sosteniendo " + selected.name.toLowerCase();
+
+  get("plate-fish").src = selected.fish;
+  get("plate-fish").classList.toggle(
+    "puffer",
+    selected.name === "Pez globo"
+  );
+
+  get("fish-name").textContent =
+    "Elegiste: " + selected.name;
+
+  get("prize").textContent = selected.prize;
+  get("detail").textContent = selected.detail;
+
+  showScreen("resultado");
+  document.querySelector(".conditions").scrollTop = 0;
+
+  if (animate) {
+    celebrate();
+    seatTimer = window.setTimeout(seatMisty, 2500);
+    get("claim").focus({preventScroll:true});
+  } else {
+    seatMisty();
+  }
+}
+
 /* INICIAR */
 get("play").addEventListener("click", () => {
+  const previous = readChoice();
+
+  if (previous !== null) {
+    showPrize(previous);
+    return;
+  }
+
+  if (!storageAvailable()) {
+    storageMessage();
+    return;
+  }
+
   startMusic();
   showScreen("eleccion");
   choices[0].focus({preventScroll:true});
 });
 
-/* SELECCIONAR PESCADO */
+/* ELEGIR Y GUARDAR ANTES DE REVELAR */
 choices.forEach(button => {
   button.addEventListener("click", () => {
     if (busy) return;
 
-    busy = true;
+    const previous = readChoice();
 
-    selected = fishes[
-      Number(button.dataset.fish)
-    ];
+    if (previous !== null) {
+      showPrize(previous);
+      return;
+    }
+
+    const index = Number(button.dataset.fish);
+
+    try {
+      localStorage.setItem(STORAGE_KEY, String(index));
+    } catch (error) {
+      storageMessage();
+      return;
+    }
+
+    busy = true;
+    selected = fishes[index];
 
     choices.forEach(other => {
       other.disabled = true;
-      other.classList.toggle(
-        "chosen",
-        other === button
-      );
+      other.classList.toggle("chosen", other === button);
     });
 
     get("selecting").hidden = false;
 
-    window.setTimeout(() => {
-      const scene = get("result-scene");
-      const dinner = get("dinner");
-
-      scene.classList.remove("seated");
-      dinner.setAttribute("aria-hidden", "true");
-
-      get("misty").src = selected.image;
-
-      get("misty").alt =
-        "Misty sosteniendo " +
-        selected.name.toLowerCase();
-
-      get("plate-fish").src = selected.fish;
-
-      get("plate-fish").classList.toggle(
-        "puffer",
-        selected.name === "Pez globo"
-      );
-
-      get("fish-name").textContent =
-        "Elegiste: " + selected.name;
-
-      get("prize").textContent =
-        selected.prize;
-
-      get("detail").textContent =
-        selected.detail;
-
-      const menu = document.querySelector(".conditions");
-      menu.scrollTop = 0;
-
-      showScreen("resultado");
-      celebrate();
-
-      get("claim").focus({
-        preventScroll:true
-      });
-
-      /* PASAR A LA MESA */
-      seatTimer = window.setTimeout(() => {
-        scene.classList.add("seated");
-
-        get("misty").alt = "";
-
-        dinner.setAttribute(
-          "aria-hidden",
-          "false"
-        );
-
-        dinner.setAttribute("role", "img");
-
-        dinner.setAttribute(
-          "aria-label",
-          "Misty sentada a la mesa con " +
-          selected.name.toLowerCase() +
-          " en el plato"
-        );
-      }, 2500);
-
+    revealTimer = window.setTimeout(() => {
+      showPrize(index, true);
     }, 1100);
   });
 });
@@ -782,24 +761,14 @@ function celebrate() {
     ).matches
   ) return;
 
-  const colors = [
-    "#ff4fac",
-    "#ffd16c",
-    "#36d7db"
-  ];
+  const colors = ["#ff4fac", "#ffd16c", "#36d7db"];
 
   for (let index = 0; index < 30; index++) {
     const piece = document.createElement("i");
 
-    piece.style.left =
-      Math.random() * 100 + "%";
-
-    piece.style.background =
-      colors[index % colors.length];
-
-    piece.style.animationDelay =
-      Math.random() * 1.2 + "s";
-
+    piece.style.left = Math.random() * 100 + "%";
+    piece.style.background = colors[index % colors.length];
+    piece.style.animationDelay = Math.random() * 1.2 + "s";
     piece.style.animationDuration =
       2 + Math.random() * 2 + "s";
 
@@ -807,42 +776,36 @@ function celebrate() {
   }
 }
 
-/* REPETIR PARA PROBAR */
-get("again").addEventListener("click", () => {
-  window.clearTimeout(seatTimer);
-
-  busy = false;
-  selected = null;
-
-  get("selecting").hidden = true;
-  get("confetti").replaceChildren();
-
-  get("result-scene").classList.remove(
-    "seated"
-  );
-
-  choices.forEach(button => {
-    button.disabled = false;
-    button.classList.remove("chosen");
-  });
-
-  showScreen("eleccion");
-
-  choices[0].focus({
-    preventScroll:true
-  });
-});
-
-/* RECLAMAR POR WHATSAPP */
+/* RECLAMAR EL PREMIO GUARDADO */
 get("claim").addEventListener("click", () => {
-  if (!selected) return;
+  const saved = readChoice();
 
-  window.location.assign(
-    selected.whatsapp
-  );
+  if (saved === null) return;
+
+  window.location.assign(fishes[saved].whatsapp);
 });
 
-/* MÚSICA SUAVE DE RESTAURANTE */
+/* SINCRONIZAR OTRAS PESTAÑAS */
+window.addEventListener("storage", event => {
+  if (event.key !== STORAGE_KEY) return;
+
+  const saved = readChoice();
+
+  if (saved !== null) {
+    showPrize(saved);
+  }
+});
+
+/* RECUPERAR AL VOLVER DESDE WHATSAPP */
+window.addEventListener("pageshow", () => {
+  const saved = readChoice();
+
+  if (saved !== null && get("resultado").hidden) {
+    showPrize(saved);
+  }
+});
+
+/* MÚSICA */
 let audio;
 let master;
 let musicOn = false;
@@ -865,36 +828,16 @@ const chords = [
   [48,52,55]
 ];
 
-function tone(
-  note,
-  when,
-  duration,
-  volume,
-  type = "sine"
-) {
-  const oscillator =
-    audio.createOscillator();
-
+function tone(note, when, duration, volume, type = "sine") {
+  const oscillator = audio.createOscillator();
   const gain = audio.createGain();
 
   oscillator.type = type;
-
   oscillator.frequency.value =
-    440 * Math.pow(
-      2,
-      (note - 69) / 12
-    );
+    440 * Math.pow(2, (note - 69) / 12);
 
-  gain.gain.setValueAtTime(
-    0,
-    when
-  );
-
-  gain.gain.linearRampToValueAtTime(
-    volume,
-    when + .015
-  );
-
+  gain.gain.setValueAtTime(0, when);
+  gain.gain.linearRampToValueAtTime(volume, when + .015);
   gain.gain.exponentialRampToValueAtTime(
     .0001,
     when + duration
@@ -904,20 +847,13 @@ function tone(
   gain.connect(master);
 
   oscillator.start(when);
-  oscillator.stop(
-    when + duration + .03
-  );
+  oscillator.stop(when + duration + .03);
 }
 
 function scheduleMusic() {
-  if (
-    !musicOn ||
-    audio.state !== "running"
-  ) return;
+  if (!musicOn || audio.state !== "running") return;
 
-  while (
-    nextNote < audio.currentTime + .18
-  ) {
+  while (nextNote < audio.currentTime + .18) {
     tone(
       melody[step % melody.length],
       nextNote,
@@ -927,18 +863,11 @@ function scheduleMusic() {
     );
 
     if (step % 4 === 0) {
-      const chord = chords[
-        Math.floor(step / 8) %
-        chords.length
-      ];
+      const chord =
+        chords[Math.floor(step / 8) % chords.length];
 
       chord.forEach((note, index) => {
-        tone(
-          note,
-          nextNote + index * .035,
-          1.3,
-          .07
-        );
+        tone(note, nextNote + index * .035, 1.3, .07);
       });
     }
 
@@ -953,35 +882,24 @@ async function startMusic(manual = false) {
 
   try {
     const AudioConstructor =
-      window.AudioContext ||
-      window.webkitAudioContext;
+      window.AudioContext || window.webkitAudioContext;
 
     if (!AudioConstructor) return;
 
     if (!audio) {
       audio = new AudioConstructor();
-
       master = audio.createGain();
       master.gain.value = .2;
-      master.connect(
-        audio.destination
-      );
+      master.connect(audio.destination);
     }
 
     await audio.resume();
 
     musicOn = true;
-    nextNote =
-      audio.currentTime + .04;
+    nextNote = audio.currentTime + .04;
 
-    window.clearInterval(
-      musicTimer
-    );
-
-    musicTimer = window.setInterval(
-      scheduleMusic,
-      80
-    );
+    window.clearInterval(musicTimer);
+    musicTimer = window.setInterval(scheduleMusic, 80);
 
     scheduleMusic();
     updateMusicButton();
@@ -993,23 +911,16 @@ async function startMusic(manual = false) {
 }
 
 function updateMusicButton() {
-  get("music").textContent =
-    musicOn ? "♫" : "♪";
-
+  get("music").textContent = musicOn ? "♫" : "♪";
   get("music").setAttribute(
     "aria-pressed",
     String(musicOn)
   );
-
   get("music").setAttribute(
     "aria-label",
-    musicOn
-      ? "Silenciar música"
-      : "Activar música"
+    musicOn ? "Silenciar música" : "Activar música"
   );
-
-  get("music").style.opacity =
-    musicOn ? "1" : ".7";
+  get("music").style.opacity = musicOn ? "1" : ".7";
 }
 
 get("music").addEventListener("click", () => {
@@ -1017,37 +928,36 @@ get("music").addEventListener("click", () => {
 
   if (musicOn) {
     musicOn = false;
-
-    window.clearInterval(
-      musicTimer
-    );
+    window.clearInterval(musicTimer);
 
     if (audio) {
       audio.suspend().catch(() => {});
     }
 
     updateMusicButton();
-
   } else {
     startMusic(true);
   }
 });
 
-document.addEventListener(
-  "visibilitychange",
-  () => {
-    if (!audio) return;
+document.addEventListener("visibilitychange", () => {
+  if (!audio) return;
 
-    if (document.hidden) {
-      audio.suspend().catch(() => {});
-    } else if (musicOn) {
-      audio.resume().then(() => {
-        nextNote =
-          audio.currentTime + .04;
-      }).catch(() => {});
-    }
+  if (document.hidden) {
+    audio.suspend().catch(() => {});
+  } else if (musicOn) {
+    audio.resume().then(() => {
+      nextNote = audio.currentTime + .04;
+    }).catch(() => {});
   }
-);
+});
+
+/* AL ABRIR, MOSTRAR EL PREMIO SI YA JUGÓ */
+const savedChoice = readChoice();
+
+if (savedChoice !== null) {
+  showPrize(savedChoice);
+}
 </script>
 </body>
 </html>
