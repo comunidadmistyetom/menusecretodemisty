@@ -1,304 +1,631 @@
 <!doctype html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport"
-        content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#f32b95">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f32b95">
+<title>El menú secreto de Misty</title>
 
-  <title>El menú secreto de Misty</title>
+<style>
+* {
+  box-sizing: border-box;
+}
 
-  <link rel="stylesheet" href="style.css">
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+  background: #142b32;
+}
+
+body {
+  min-height: 100svh;
+  display: grid;
+  place-items: center;
+  font-family: Arial, sans-serif;
+  color: white;
+}
+
+button {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+.game {
+  width: min(100vw, 56.25svh);
+  height: min(100svh, 177.7778vw);
+  position: relative;
+  overflow: hidden;
+  background: #4dadaf;
+  box-shadow: 0 0 70px #0008;
+}
+
+.screen {
+  position: absolute;
+  inset: 0;
+  isolation: isolate;
+}
+
+.screen[hidden] {
+  display: none;
+}
+
+.backdrop {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  z-index: -2;
+  pointer-events: none;
+  user-select: none;
+}
+
+.image-button {
+  position: absolute;
+  left: 12%;
+  width: 76%;
+  border: 0;
+  padding: 0;
+  background: none;
+  cursor: pointer;
+  transition: transform .2s;
+  filter: drop-shadow(0 4px 4px #6b20494d);
+}
+
+.image-button img {
+  display: block;
+  width: 100%;
+  height: auto;
+  pointer-events: none;
+}
+
+.image-button:hover {
+  transform: scale(1.035);
+}
+
+.image-button:active {
+  transform: scale(.96);
+}
+
+button:focus-visible {
+  outline: 3px solid white;
+  outline-offset: 3px;
+}
+
+.play {
+  bottom: 7%;
+  animation: breathe 2s ease-in-out infinite;
+}
+
+/* Los botones transparentes coinciden con las seis bandejas. */
+.choices {
+  position: absolute;
+  left: 1.5%;
+  right: 1.5%;
+  top: 49.6%;
+  height: 40.8%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: repeat(3, 1fr);
+  gap: 1.1% 2.5%;
+}
+
+.choices button {
+  border: 3px solid transparent;
+  border-radius: 16%;
+  background: transparent;
+  cursor: pointer;
+  transition:
+    background .2s,
+    box-shadow .2s,
+    transform .2s;
+}
+
+.choices button:hover,
+.choices button:focus-visible {
+  background: #fff2;
+  box-shadow: inset 0 0 16px #fff9;
+}
+
+.choices button.chosen {
+  border-color: #ffe47c;
+  box-shadow:
+    0 0 24px #fff38b,
+    inset 0 0 20px #fff8;
+  animation: breathe .5s ease-in-out infinite;
+}
+
+.choices button:disabled {
+  cursor: default;
+}
+
+.selecting {
+  position: absolute;
+  left: 6%;
+  right: 6%;
+  bottom: 2%;
+  padding: 10px;
+  border-radius: 16px;
+  background: #91215de8;
+  text-align: center;
+  font-size: clamp(12px, 2.5svh, 20px);
+  font-weight: bold;
+}
+
+.misty {
+  position: absolute;
+  left: 19%;
+  top: 22%;
+  width: 62%;
+  height: 47%;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+.misty.enter {
+  animation: arrive .6s ease-out;
+}
+
+.prize-card {
+  position: absolute;
+  top: 70%;
+  left: 8%;
+  width: 84%;
+  padding: 8px;
+  border-radius: 18px;
+  background: #fff0f8ed;
+  color: #812352;
+  text-align: center;
+  box-shadow: 0 3px 12px #64244733;
+}
+
+.prize-card span {
+  font-size: clamp(10px, 1.7svh, 15px);
+}
+
+.prize-card h1 {
+  margin: 3px 0;
+  color: #ed258d;
+  font-size: clamp(22px, 4.5svh, 42px);
+}
+
+.prize-card p {
+  margin: 0;
+  font-size: clamp(12px, 2svh, 18px);
+  font-weight: bold;
+}
+
+.claim {
+  bottom: 6%;
+  left: 10%;
+  width: 80%;
+}
+
+.again {
+  position: absolute;
+  bottom: 1.6%;
+  left: 24%;
+  width: 52%;
+  padding: 6px;
+  border: 0;
+  border-radius: 20px;
+  background: #fffdeb;
+  color: #7a2850;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+#confetti {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+#confetti i {
+  position: absolute;
+  top: -20px;
+  width: 7px;
+  height: 12px;
+  animation: fall 3s linear both;
+}
+
+dialog {
+  width: min(90vw, 360px);
+  max-height: 85svh;
+  overflow: auto;
+  padding: 25px;
+  border: 3px solid #f56da9;
+  border-radius: 24px;
+  background: #fff4fa;
+  color: #75264d;
+  text-align: center;
+}
+
+dialog::backdrop {
+  background: #201625b8;
+}
+
+dialog h2 {
+  font-size: 22px;
+}
+
+dialog p {
+  line-height: 1.5;
+}
+
+dialog button {
+  padding: 12px 25px;
+  border: 0;
+  border-radius: 15px;
+  background: #e82c8b;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+@keyframes breathe {
+  50% {
+    transform: scale(1.035);
+  }
+}
+
+@keyframes arrive {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(.9);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes fall {
+  to {
+    transform: translateY(105svh) rotate(600deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+</style>
 </head>
 
 <body>
 
-<main class="juego">
+<main class="game" aria-label="El menú secreto de Misty">
 
-  <!-- PANTALLA DE INICIO -->
-  <section id="inicio" class="pantalla">
+  <!-- INICIO -->
+  <section id="inicio" class="screen" aria-label="Inicio">
     <img
-      class="fondo"
+      class="backdrop"
       src="inicio.png"
-      alt="Restaurante de Misty"
+      alt="Misty te da la bienvenida a su restaurante de pescados"
+      draggable="false"
     >
 
     <button
-      id="botonJugar"
-      class="boton-imagen boton-inicio"
-      aria-label="Comenzar juego"
+      id="play"
+      class="image-button play"
+      type="button"
+      aria-label="Iniciar juego"
     >
-      <img src="boton_inicio.png" alt="Inicio">
+      <img
+        src="boton_inicio.png"
+        alt="Inicio"
+        draggable="false"
+      >
     </button>
   </section>
 
-  <!-- ELECCIÓN DE PESCADO -->
-  <section id="eleccion" class="pantalla" hidden>
+  <!-- ELECCIÓN -->
+  <section
+    id="eleccion"
+    class="screen"
+    aria-label="Elegí un pescado"
+    hidden
+  >
     <img
-      class="fondo"
+      class="backdrop"
       src="eleccion.png"
-      alt="Misty y sus seis variedades de pescado"
+      alt="Misty frente a seis bandejas de pescados"
+      draggable="false"
     >
 
-    <!-- Botones transparentes sobre las bandejas -->
-    <div class="pescados">
+    <div class="choices">
       <button
-        data-pescado="0"
+        type="button"
+        data-fish="0"
         aria-label="Elegir pescado común"
       ></button>
 
       <button
-        data-pescado="1"
+        type="button"
+        data-fish="1"
         aria-label="Elegir sardinas"
       ></button>
 
       <button
-        data-pescado="2"
+        type="button"
+        data-fish="2"
         aria-label="Elegir atún"
       ></button>
 
       <button
-        data-pescado="3"
+        type="button"
+        data-fish="3"
         aria-label="Elegir salmón"
       ></button>
 
       <button
-        data-pescado="4"
+        type="button"
+        data-fish="4"
         aria-label="Elegir pez globo"
       ></button>
 
       <button
-        data-pescado="5"
+        type="button"
+        data-fish="5"
         aria-label="Elegir merluza"
       ></button>
     </div>
 
-    <div id="mensajeEleccion" class="mensaje-eleccion" hidden>
+    <div
+      id="selecting"
+      class="selecting"
+      role="status"
+      hidden
+    >
       ¡Misty está preparando tu sorpresa! 🐟
     </div>
   </section>
 
-  <!-- PANTALLA DEL PREMIO -->
-  <section id="resultado" class="pantalla" hidden>
+  <!-- PREMIO -->
+  <section
+    id="resultado"
+    class="screen"
+    aria-label="Tu premio"
+    hidden
+  >
     <img
-      class="fondo"
+      class="backdrop"
       src="premio.png"
-      alt="¡Ganaste!"
+      alt="Restaurante con cartel ¡Ganaste!"
+      draggable="false"
     >
 
-    <div id="confeti" aria-hidden="true"></div>
+    <div id="confetti" aria-hidden="true"></div>
 
     <img
-      id="mistyPremio"
-      class="misty-premio"
+      id="misty"
+      class="misty"
       alt=""
+      draggable="false"
     >
 
-    <div class="tarjeta-premio" aria-live="polite">
-      <span id="nombrePescado"></span>
-      <h1 id="valorPremio"></h1>
-      <p id="detallePremio"></p>
+    <div class="prize-card" aria-live="polite">
+      <span id="fish-name"></span>
+      <h1 id="prize"></h1>
+      <p id="detail"></p>
     </div>
 
     <button
-      id="botonReclamar"
-      class="boton-imagen boton-reclamar"
+      id="claim"
+      class="image-button claim"
+      type="button"
       aria-label="Reclamar premio"
     >
-      <img src="boton_reclamar.png" alt="Reclamar premio">
+      <img
+        src="boton_reclamar.png"
+        alt="Reclamar premio"
+        draggable="false"
+      >
     </button>
 
-    <button id="botonRepetir" class="boton-repetir">
+    <button id="again" class="again" type="button">
       Volver a probar
     </button>
   </section>
 
-  <!-- AVISO TEMPORAL: WHATSAPP SE AGREGA DESPUÉS -->
-  <dialog id="avisoReclamo">
-    <h2>¡Tu premio está listo! 😻</h2>
-
-    <p id="resumenPremio"></p>
-
+  <!-- AVISO TEMPORAL: WHATSAPP SE AGREGA AL FINAL -->
+  <dialog id="claim-dialog" aria-labelledby="dialog-title">
+    <h2 id="dialog-title">¡Tu premio está listo! 😻🐟</h2>
+    <p id="claim-text"></p>
     <p>
-      Pronto habilitaremos las líneas de WhatsApp
-      para reclamar tu premio.
+      El envío a WhatsApp se habilitará cuando configuremos
+      las líneas correspondientes.
     </p>
-
-    <button id="cerrarAviso">Entendido</button>
+    <button id="close-dialog" type="button">
+      Entendido
+    </button>
   </dialog>
 
 </main>
 
 <script>
-const opciones = [
+"use strict";
+
+const fishes = [
   {
-    nombre: "Pescado común",
-    imagen: "misty_pescado.png",
-    premio: "500 fichas",
-    detalle: "¡Disfrutá tu premio!"
+    name: "Pescado común",
+    image: "misty_pescado.png",
+    prize: "500 fichas",
+    detail: "¡Disfrutá tu premio!"
   },
   {
-    nombre: "Sardinas",
-    imagen: "misty_sardinas.png",
-    premio: "1000 fichas",
-    detalle: "¡Disfrutá tu premio!"
+    name: "Sardinas",
+    image: "misty_sardinas.png",
+    prize: "1000 fichas",
+    detail: "¡Disfrutá tu premio!"
   },
   {
-    nombre: "Atún",
-    imagen: "misty_atun.png",
-    premio: "10%",
-    detalle: "En tu próxima carga"
+    name: "Atún",
+    image: "misty_atun.png",
+    prize: "10%",
+    detail: "En tu próxima carga"
   },
   {
-    nombre: "Salmón",
-    imagen: "misty_salmon.png",
-    premio: "15%",
-    detalle: "En tu próxima carga"
+    name: "Salmón",
+    image: "misty_salmon.png",
+    prize: "15%",
+    detail: "En tu próxima carga"
   },
   {
-    nombre: "Pez globo",
-    imagen: "misty_pezglobo.png",
-    premio: "20%",
-    detalle: "En tu próxima carga"
+    name: "Pez globo",
+    image: "misty_pezglobo.png",
+    prize: "20%",
+    detail: "En tu próxima carga"
   },
   {
-    nombre: "Merluza",
-    imagen: "misty_merluza.png",
-    premio: "25%",
-    detalle: "En tu próxima carga"
+    name: "Merluza",
+    image: "misty_merluza.png",
+    prize: "25%",
+    detail: "En tu próxima carga"
   }
 ];
 
-const obtener = id => document.getElementById(id);
+const get = id => document.getElementById(id);
+const choiceButtons = document.querySelectorAll("[data-fish]");
 
-const botonesPescado = [
-  ...document.querySelectorAll("[data-pescado]")
-];
+let busy = false;
+let selected = null;
 
-let eligiendo = false;
-let opcionElegida = null;
-
-function mostrarPantalla(id) {
-  document.querySelectorAll(".pantalla").forEach(pantalla => {
-    pantalla.hidden = pantalla.id !== id;
+function showScreen(id) {
+  document.querySelectorAll(".screen").forEach(screen => {
+    screen.hidden = screen.id !== id;
   });
 }
 
-/* Precargar las imágenes de Misty */
-opciones.forEach(opcion => {
-  const imagen = new Image();
-  imagen.src = opcion.imagen;
+/* Precarga las imágenes de Misty y el fondo final. */
+[
+  "eleccion.png",
+  "premio.png",
+  "boton_reclamar.png",
+  ...fishes.map(fish => fish.image)
+].forEach(source => {
+  const image = new Image();
+  image.src = source;
 });
 
-/* Comenzar */
-obtener("botonJugar").addEventListener("click", () => {
-  mostrarPantalla("eleccion");
-  botonesPescado[0].focus({ preventScroll: true });
+get("play").addEventListener("click", () => {
+  showScreen("eleccion");
+  choiceButtons[0].focus({ preventScroll: true });
 });
 
-/* Elegir pescado */
-botonesPescado.forEach(boton => {
-  boton.addEventListener("click", () => {
-    if (eligiendo) return;
+choiceButtons.forEach(button => {
+  button.addEventListener("click", () => {
+    if (busy) return;
 
-    eligiendo = true;
+    busy = true;
+    selected = fishes[Number(button.dataset.fish)];
 
-    const indice = Number(boton.dataset.pescado);
-    opcionElegida = opciones[indice];
-
-    botonesPescado.forEach(otroBoton => {
-      otroBoton.disabled = true;
-
-      otroBoton.classList.toggle(
-        "seleccionado",
-        otroBoton === boton
+    choiceButtons.forEach(otherButton => {
+      otherButton.disabled = true;
+      otherButton.classList.toggle(
+        "chosen",
+        otherButton === button
       );
     });
 
-    obtener("mensajeEleccion").hidden = false;
+    get("selecting").hidden = false;
 
-    setTimeout(mostrarPremio, 1200);
+    /* Breve pausa antes de revelar el premio. */
+    window.setTimeout(() => {
+      const misty = get("misty");
+
+      misty.classList.remove("enter");
+      misty.src = selected.image;
+      misty.alt =
+        "Misty sosteniendo " + selected.name.toLowerCase();
+
+      get("fish-name").textContent =
+        "Elegiste: " + selected.name;
+
+      get("prize").textContent = selected.prize;
+      get("detail").textContent = selected.detail;
+
+      showScreen("resultado");
+
+      /* Reinicia la animación de entrada. */
+      void misty.offsetWidth;
+      misty.classList.add("enter");
+
+      celebrate();
+      get("claim").focus({ preventScroll: true });
+    }, 1100);
   });
 });
 
-function mostrarPremio() {
-  const imagenMisty = obtener("mistyPremio");
-
-  imagenMisty.src = opcionElegida.imagen;
-  imagenMisty.alt =
-    "Misty sosteniendo " + opcionElegida.nombre.toLowerCase();
-
-  obtener("nombrePescado").textContent =
-    "Elegiste: " + opcionElegida.nombre;
-
-  obtener("valorPremio").textContent = opcionElegida.premio;
-
-  obtener("detallePremio").textContent = opcionElegida.detalle;
-
-  mostrarPantalla("resultado");
-  lanzarConfeti();
-
-  obtener("botonReclamar").focus({ preventScroll: true });
-}
-
-/* Confeti */
-function lanzarConfeti() {
-  const contenedor = obtener("confeti");
-  contenedor.replaceChildren();
+function celebrate() {
+  const container = get("confetti");
+  container.replaceChildren();
 
   if (
-    window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches
   ) {
     return;
   }
 
-  const colores = ["#ff4fac", "#ffd16c", "#36d7db", "#ffffff"];
+  const colors = ["#ff4fac", "#ffd16c", "#36d7db"];
 
-  for (let i = 0; i < 35; i++) {
-    const pieza = document.createElement("i");
+  for (let index = 0; index < 30; index++) {
+    const piece = document.createElement("i");
 
-    pieza.style.left = Math.random() * 100 + "%";
-    pieza.style.background = colores[i % colores.length];
-    pieza.style.animationDelay = Math.random() * 0.8 + "s";
-    pieza.style.animationDuration = 2 + Math.random() * 2 + "s";
+    piece.style.left = Math.random() * 100 + "%";
+    piece.style.background = colors[index % colors.length];
+    piece.style.animationDelay = Math.random() * 1.2 + "s";
+    piece.style.animationDuration = 2 + Math.random() * 2 + "s";
 
-    contenedor.appendChild(pieza);
+    container.appendChild(piece);
   }
 }
 
-/* Reclamo temporal */
-obtener("botonReclamar").addEventListener("click", () => {
-  if (!opcionElegida) return;
+/* Repetición habilitada solamente para esta etapa de prueba. */
+get("again").addEventListener("click", () => {
+  busy = false;
+  selected = null;
 
-  const esBono = opcionElegida.premio.includes("%");
+  get("selecting").hidden = true;
+  get("confetti").replaceChildren();
 
-  obtener("resumenPremio").textContent =
-    "Ganaste " +
-    opcionElegida.premio +
-    (esBono ? " en tu próxima carga." : ".");
-
-  obtener("avisoReclamo").showModal();
-});
-
-obtener("cerrarAviso").addEventListener("click", () => {
-  obtener("avisoReclamo").close();
-});
-
-/* Repetir mientras estamos probando el juego */
-obtener("botonRepetir").addEventListener("click", () => {
-  eligiendo = false;
-  opcionElegida = null;
-
-  obtener("mensajeEleccion").hidden = true;
-  obtener("confeti").replaceChildren();
-
-  botonesPescado.forEach(boton => {
-    boton.disabled = false;
-    boton.classList.remove("seleccionado");
+  choiceButtons.forEach(button => {
+    button.disabled = false;
+    button.classList.remove("chosen");
   });
 
-  mostrarPantalla("eleccion");
-  botonesPescado[0].focus({ preventScroll: true });
+  showScreen("eleccion");
+  choiceButtons[0].focus({ preventScroll: true });
+});
+
+/* Aquí conectaremos las líneas de WhatsApp al finalizar. */
+get("claim").addEventListener("click", () => {
+  if (!selected) return;
+
+  const percentagePrize =
+    selected.detail === "En tu próxima carga";
+
+  get("claim-text").textContent =
+    "Ganaste " +
+    selected.prize +
+    (percentagePrize ? " en tu próxima carga." : ".");
+
+  get("claim-dialog").showModal();
+});
+
+get("close-dialog").addEventListener("click", () => {
+  get("claim-dialog").close();
 });
 </script>
 
