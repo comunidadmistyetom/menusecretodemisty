@@ -1,1 +1,306 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#f32b95">
 
+  <title>El menú secreto de Misty</title>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<main class="juego">
+
+  <!-- PANTALLA DE INICIO -->
+  <section id="inicio" class="pantalla">
+    <img
+      class="fondo"
+      src="inicio.png"
+      alt="Restaurante de Misty"
+    >
+
+    <button
+      id="botonJugar"
+      class="boton-imagen boton-inicio"
+      aria-label="Comenzar juego"
+    >
+      <img src="boton_inicio.png" alt="Inicio">
+    </button>
+  </section>
+
+  <!-- ELECCIÓN DE PESCADO -->
+  <section id="eleccion" class="pantalla" hidden>
+    <img
+      class="fondo"
+      src="eleccion.png"
+      alt="Misty y sus seis variedades de pescado"
+    >
+
+    <!-- Botones transparentes sobre las bandejas -->
+    <div class="pescados">
+      <button
+        data-pescado="0"
+        aria-label="Elegir pescado común"
+      ></button>
+
+      <button
+        data-pescado="1"
+        aria-label="Elegir sardinas"
+      ></button>
+
+      <button
+        data-pescado="2"
+        aria-label="Elegir atún"
+      ></button>
+
+      <button
+        data-pescado="3"
+        aria-label="Elegir salmón"
+      ></button>
+
+      <button
+        data-pescado="4"
+        aria-label="Elegir pez globo"
+      ></button>
+
+      <button
+        data-pescado="5"
+        aria-label="Elegir merluza"
+      ></button>
+    </div>
+
+    <div id="mensajeEleccion" class="mensaje-eleccion" hidden>
+      ¡Misty está preparando tu sorpresa! 🐟
+    </div>
+  </section>
+
+  <!-- PANTALLA DEL PREMIO -->
+  <section id="resultado" class="pantalla" hidden>
+    <img
+      class="fondo"
+      src="premio.png"
+      alt="¡Ganaste!"
+    >
+
+    <div id="confeti" aria-hidden="true"></div>
+
+    <img
+      id="mistyPremio"
+      class="misty-premio"
+      alt=""
+    >
+
+    <div class="tarjeta-premio" aria-live="polite">
+      <span id="nombrePescado"></span>
+      <h1 id="valorPremio"></h1>
+      <p id="detallePremio"></p>
+    </div>
+
+    <button
+      id="botonReclamar"
+      class="boton-imagen boton-reclamar"
+      aria-label="Reclamar premio"
+    >
+      <img src="boton_reclamar.png" alt="Reclamar premio">
+    </button>
+
+    <button id="botonRepetir" class="boton-repetir">
+      Volver a probar
+    </button>
+  </section>
+
+  <!-- AVISO TEMPORAL: WHATSAPP SE AGREGA DESPUÉS -->
+  <dialog id="avisoReclamo">
+    <h2>¡Tu premio está listo! 😻</h2>
+
+    <p id="resumenPremio"></p>
+
+    <p>
+      Pronto habilitaremos las líneas de WhatsApp
+      para reclamar tu premio.
+    </p>
+
+    <button id="cerrarAviso">Entendido</button>
+  </dialog>
+
+</main>
+
+<script>
+const opciones = [
+  {
+    nombre: "Pescado común",
+    imagen: "misty_pescado.png",
+    premio: "500 fichas",
+    detalle: "¡Disfrutá tu premio!"
+  },
+  {
+    nombre: "Sardinas",
+    imagen: "misty_sardinas.png",
+    premio: "1000 fichas",
+    detalle: "¡Disfrutá tu premio!"
+  },
+  {
+    nombre: "Atún",
+    imagen: "misty_atun.png",
+    premio: "10%",
+    detalle: "En tu próxima carga"
+  },
+  {
+    nombre: "Salmón",
+    imagen: "misty_salmon.png",
+    premio: "15%",
+    detalle: "En tu próxima carga"
+  },
+  {
+    nombre: "Pez globo",
+    imagen: "misty_pezglobo.png",
+    premio: "20%",
+    detalle: "En tu próxima carga"
+  },
+  {
+    nombre: "Merluza",
+    imagen: "misty_merluza.png",
+    premio: "25%",
+    detalle: "En tu próxima carga"
+  }
+];
+
+const obtener = id => document.getElementById(id);
+
+const botonesPescado = [
+  ...document.querySelectorAll("[data-pescado]")
+];
+
+let eligiendo = false;
+let opcionElegida = null;
+
+function mostrarPantalla(id) {
+  document.querySelectorAll(".pantalla").forEach(pantalla => {
+    pantalla.hidden = pantalla.id !== id;
+  });
+}
+
+/* Precargar las imágenes de Misty */
+opciones.forEach(opcion => {
+  const imagen = new Image();
+  imagen.src = opcion.imagen;
+});
+
+/* Comenzar */
+obtener("botonJugar").addEventListener("click", () => {
+  mostrarPantalla("eleccion");
+  botonesPescado[0].focus({ preventScroll: true });
+});
+
+/* Elegir pescado */
+botonesPescado.forEach(boton => {
+  boton.addEventListener("click", () => {
+    if (eligiendo) return;
+
+    eligiendo = true;
+
+    const indice = Number(boton.dataset.pescado);
+    opcionElegida = opciones[indice];
+
+    botonesPescado.forEach(otroBoton => {
+      otroBoton.disabled = true;
+
+      otroBoton.classList.toggle(
+        "seleccionado",
+        otroBoton === boton
+      );
+    });
+
+    obtener("mensajeEleccion").hidden = false;
+
+    setTimeout(mostrarPremio, 1200);
+  });
+});
+
+function mostrarPremio() {
+  const imagenMisty = obtener("mistyPremio");
+
+  imagenMisty.src = opcionElegida.imagen;
+  imagenMisty.alt =
+    "Misty sosteniendo " + opcionElegida.nombre.toLowerCase();
+
+  obtener("nombrePescado").textContent =
+    "Elegiste: " + opcionElegida.nombre;
+
+  obtener("valorPremio").textContent = opcionElegida.premio;
+
+  obtener("detallePremio").textContent = opcionElegida.detalle;
+
+  mostrarPantalla("resultado");
+  lanzarConfeti();
+
+  obtener("botonReclamar").focus({ preventScroll: true });
+}
+
+/* Confeti */
+function lanzarConfeti() {
+  const contenedor = obtener("confeti");
+  contenedor.replaceChildren();
+
+  if (
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches
+  ) {
+    return;
+  }
+
+  const colores = ["#ff4fac", "#ffd16c", "#36d7db", "#ffffff"];
+
+  for (let i = 0; i < 35; i++) {
+    const pieza = document.createElement("i");
+
+    pieza.style.left = Math.random() * 100 + "%";
+    pieza.style.background = colores[i % colores.length];
+    pieza.style.animationDelay = Math.random() * 0.8 + "s";
+    pieza.style.animationDuration = 2 + Math.random() * 2 + "s";
+
+    contenedor.appendChild(pieza);
+  }
+}
+
+/* Reclamo temporal */
+obtener("botonReclamar").addEventListener("click", () => {
+  if (!opcionElegida) return;
+
+  const esBono = opcionElegida.premio.includes("%");
+
+  obtener("resumenPremio").textContent =
+    "Ganaste " +
+    opcionElegida.premio +
+    (esBono ? " en tu próxima carga." : ".");
+
+  obtener("avisoReclamo").showModal();
+});
+
+obtener("cerrarAviso").addEventListener("click", () => {
+  obtener("avisoReclamo").close();
+});
+
+/* Repetir mientras estamos probando el juego */
+obtener("botonRepetir").addEventListener("click", () => {
+  eligiendo = false;
+  opcionElegida = null;
+
+  obtener("mensajeEleccion").hidden = true;
+  obtener("confeti").replaceChildren();
+
+  botonesPescado.forEach(boton => {
+    boton.disabled = false;
+    boton.classList.remove("seleccionado");
+  });
+
+  mostrarPantalla("eleccion");
+  botonesPescado[0].focus({ preventScroll: true });
+});
+</script>
+
+</body>
+</html>
